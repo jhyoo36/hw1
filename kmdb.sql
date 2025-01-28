@@ -112,13 +112,31 @@
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
 -- TODO!
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS castings;
 
 -- Create new tables, according to your domain model
 -- TODO!
+CREATE TABLE movies (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT, 
+  released TEXT,
+  MPAA TEXT,
+  studio TEXT
+);
+
+CREATE TABLE castings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  real_name TEXT,
+  movie TEXT, 
+  casting TEXT
+);
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+
+
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -137,3 +155,16 @@
 
 -- The SQL statement for the cast output
 -- TODO!
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS teachers;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS sections;
+DROP TABLE IF EXISTS enrollments;
+
+CREATE TABLE students (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name TEXT,
+  last_name TEXT,
+  email TEXT,
+  phone_number TEXT
+);
