@@ -114,7 +114,8 @@
 -- TODO!
 DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS castings;
-
+DROP TABLE IF EXISTS characters;
+DROP TABLE IF EXISTS stars;
 -- Create new tables, according to your domain model
 -- TODO!
 CREATE TABLE movies (
@@ -125,16 +126,85 @@ CREATE TABLE movies (
   studio TEXT
 );
 
+-- I considered characters and actors/actresses as many to many relationship 
+-- since one actor/actress can play multiple roles in a movie, but a role can be played by multiple actors/actresses 
+CREATE TABLE characters (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  roles TEXT
+);
+
+CREATE TABLE stars (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  real_name TEXT 
+);
+
 CREATE TABLE castings (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  real_name TEXT,
-  movie TEXT, 
-  casting TEXT
+  star_id INTEGER, 
+  movies_id INTEGER,
+  characters_id INTEGER
 );
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+
+INSERT INTO movies(title, released, MPAA, studio) 
+VALUES 
+("Batman Begins", "2005", "PG-13", "Warner Bros."),
+("The Dark Knight", "2008", "PG-13", "Warner Bros."),
+("The Dark Knight Rises", "2012", "PG-13", "Warner Bros.")
+;
+
+INSERT INTO characters(roles)
+VALUES
+("Bruce Wayne"),
+("Alfred"),
+("Ra's Al Ghul"),
+("Rachel Dawes"),
+("Commissioner Gordon"),
+("Joker"),
+("Harvey Dent"),
+("Bane"),
+("John Blake"),
+("Selina Kyle")
+;
+
+INSERT INTO stars(real_name) 
+VALUES 
+("Christian Bale"),
+("Michael Caine"),
+("Liam Neeson"),
+("Katie Holmes"),
+("Gary Oldman"),
+("Heath Ledger"),
+("Aaron Eckhart"),
+("Maggie Gyllenhaal"),
+("Tom Hardy"),
+("Joseph Gordon-Levitt"),
+("Anne Hathaway")
+;
+
+INSERT INTO castings(movies_id, star_id, characters_id) 
+VALUES 
+(1, 1, 1),
+(1, 2, 2),
+(1, 3, 3),
+(1, 4, 4),
+(1, 5, 5),
+
+(2, 1, 1),
+(2, 6, 6),
+(2, 7, 7),
+(2, 2, 2),
+(2, 8, 4),
+
+(3, 1, 1),
+(3, 5, 5),
+(3, 9, 8),
+(3, 10, 9),
+(3, 11, 10)
+;
 
 
 
@@ -145,6 +215,8 @@ CREATE TABLE castings (
 
 -- The SQL statement for the movies output
 -- TODO!
+SELECT title, released, MPAA, studio 
+from movies;
 
 -- Prints a header for the cast output
 .print ""
@@ -152,19 +224,12 @@ CREATE TABLE castings (
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
 -- TODO!
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS teachers;
-DROP TABLE IF EXISTS courses;
-DROP TABLE IF EXISTS sections;
-DROP TABLE IF EXISTS enrollments;
 
-CREATE TABLE students (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  first_name TEXT,
-  last_name TEXT,
-  email TEXT,
-  phone_number TEXT
-);
+SELECT movies.title, stars.real_name, characters.roles
+from castings
+JOIN movies ON castings.movies_id = movies.id
+JOIN stars ON castings.star_id = stars.id
+JOIN characters ON castings.characters_id = characters.id
+;
